@@ -1,0 +1,27 @@
+.notification-center {
+    background-color: alpha(black, 0.66);
+}
+
+
+.notification-center .header-widget {
+    color: alpha(white, 0.80);
+    font-size: 12pt;
+    background-color: alpha(black, 0.26);
+}
+
+NCenter {
+    background-color: transparent;
+}
+
+/* Identical to the panel shadow.left */
+.shadow-block {
+    background-color: transparent;
+    background-image: linear-gradient(to left,
+                                      rgba(0, 0, 0, 0.3),
+                                      transparent
+                                      );
+}
+
+ClientImage {
+    background-color: transparent;
+}
