@@ -99,6 +99,38 @@ public class Slat : Gtk.ApplicationWindow
         button.menu_model = menu;
 
         register_menu_button(button);
+
+        /* Emulate Budgie Menu Applet */
+        var mainbtn = new Gtk.Button.from_icon_name("start-here", Gtk.IconSize.SMALL_TOOLBAR);
+        mainbtn.can_focus = false;
+        var popover = new BudgieMenuWindow(mainbtn);
+        mainbtn.button_press_event.connect((e)=> {
+            if (e.button != 1) {
+                return Gdk.EVENT_PROPAGATE;
+            }
+            popover.show_all();
+            return Gdk.EVENT_STOP;
+        });
+        register_popover(popover);
+        layout.pack_start(mainbtn, false, false, 10);
+    }
+
+    /**
+     * Register a popover with expansion system. In future we'll add the
+     * ability for menubar like behaviour
+     */
+    void register_popover(Gtk.Popover? popover)
+    {
+        if (popover == null) {
+            return;
+        }
+        popover.notify["visible"].connect(()=> {
+            if (popover.get_visible()) {
+                set_expanded(true);
+            } else {
+                set_expanded(false);
+            }
+        });
     }
 
     void register_menu_button(Gtk.MenuButton? button)
