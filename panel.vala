@@ -12,15 +12,25 @@
 namespace Budgie
 {
 
+public enum PanelPosition
+{
+    BOTTOM = 0,
+    TOP,
+    LEFT,
+    RIGHT
+}
+
 public class Slat : Gtk.ApplicationWindow
 {
 
     Gdk.Rectangle scr;
-    int intended_height = 42;
+    int intended_height = 32;
     Gdk.Rectangle small_scr;
     Gdk.Rectangle orig_scr;
 
     Gtk.Box layout;
+
+    PanelPosition position = PanelPosition.TOP;
 
     public Slat(Gtk.Application? app)
     {
@@ -53,9 +63,11 @@ public class Slat : Gtk.ApplicationWindow
         demo_code();
 
         realize();
+        set_struts();
         // Revisit to account for multiple monitors..
         move(0, 0);
         show_all();
+        set_expanded(false);
         //present();
     }
 
@@ -134,6 +146,68 @@ public class Slat : Gtk.ApplicationWindow
         if (expanded) {
             present();
         }
+    }
+
+    protected void set_struts()
+    {
+        Gdk.Atom atom;
+        long struts[12];
+        var primary_monitor_rect = orig_scr;
+        bool hidden_struts = false;
+        /*
+        strut-left strut-right strut-top strut-bottom
+        strut-left-start-y   strut-left-end-y
+        strut-right-start-y  strut-right-end-y
+        strut-top-start-x    strut-top-end-x
+        strut-bottom-start-x strut-bottom-end-x
+        */
+
+        if (!get_realized()) {
+            return;
+        }
+
+        long panel_size = intended_height;
+
+        if (hidden_struts) {
+            panel_size = 1;
+        }
+
+        // Struts dependent on position
+        switch (position) {
+            case PanelPosition.TOP:
+                struts = { 0, 0, primary_monitor_rect.y+panel_size, 0,
+                    0, 0, 0, 0,
+                    primary_monitor_rect.x, primary_monitor_rect.x+primary_monitor_rect.width,
+                    0, 0
+                };
+                break;
+            case PanelPosition.LEFT:
+                struts = { panel_size, 0, 0, 0,
+                    primary_monitor_rect.y, primary_monitor_rect.y+primary_monitor_rect.height, 
+                    0, 0, 0, 0, 0, 0
+                };
+                break;
+            case PanelPosition.RIGHT:
+                struts = { 0, panel_size, 0, 0,
+                    0, 0,
+                    primary_monitor_rect.y, primary_monitor_rect.y+primary_monitor_rect.height,
+                    0, 0, 0, 0
+                };
+                break;
+            case PanelPosition.BOTTOM:
+            default:
+                struts = { 0, 0, 0, 
+                    (screen.get_height()-primary_monitor_rect.height-primary_monitor_rect.y) + panel_size,
+                    0, 0, 0, 0, 0, 0, 
+                    primary_monitor_rect.x, primary_monitor_rect.x + primary_monitor_rect.width
+                };
+                break;
+        }
+
+        // all relevant WMs support this, Mutter included
+        atom = Gdk.Atom.intern("_NET_WM_STRUT_PARTIAL", false);
+        Gdk.property_change(get_window(), atom, Gdk.Atom.intern("CARDINAL", false),
+            32, Gdk.PropMode.REPLACE, (uint8[])struts, 12);
     }
 }
 
