@@ -1,5 +1,5 @@
 /*
- * BudgiePanel.vala
+ * panel.vala
  * 
  * Copyright 2015 Ikey Doherty <ikey@solus-project.com>
  * 
