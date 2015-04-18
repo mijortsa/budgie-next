@@ -177,6 +177,7 @@ public class Fullsize : Gtk.ApplicationWindow
         var region = new Cairo.Region.rectangle(r);
         input_shape_combine_region(region);
 
+        message("W: %d, H: %d", r.width, r.height);
         if (expanded) {
             present();
         }
