@@ -24,7 +24,7 @@ public class Slat : Gtk.ApplicationWindow
 {
 
     Gdk.Rectangle scr;
-    int intended_height = 32;
+    int intended_height = 42;
     Gdk.Rectangle small_scr;
     Gdk.Rectangle orig_scr;
 
@@ -57,6 +57,9 @@ public class Slat : Gtk.ApplicationWindow
         scr = small_scr;
 
         layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+        layout.set_size_request(scr.width, intended_height);
+        layout.vexpand = false;
+        vexpand = false;
         add(layout);
         layout.valign = Gtk.Align.START;
 
@@ -118,6 +121,8 @@ public class Slat : Gtk.ApplicationWindow
     /**
      * Register a popover with expansion system. In future we'll add the
      * ability for menubar like behaviour
+     *
+     * TODO: Expand immediately before and after change events
      */
     void register_popover(Gtk.Popover? popover)
     {
