@@ -31,6 +31,7 @@ public class Slat : Gtk.ApplicationWindow
     Gtk.Box layout;
 
     PanelPosition position = PanelPosition.TOP;
+    bool expanded = true;
 
     public Slat(Gtk.Application? app)
     {
@@ -129,10 +130,11 @@ public class Slat : Gtk.ApplicationWindow
         if (popover == null) {
             return;
         }
+        popover.map.connect(()=> {
+            set_expanded(true);
+        });
         popover.notify["visible"].connect(()=> {
-            if (popover.get_visible()) {
-                set_expanded(true);
-            } else {
+            if (!popover.get_visible()) {
                 set_expanded(false);
             }
         });
@@ -144,14 +146,7 @@ public class Slat : Gtk.ApplicationWindow
             return;
         }
         button.can_focus = false;
-
-        button.popover.notify["visible"].connect(()=> {
-            if (button.popover.get_visible()) {
-                set_expanded(true);
-            } else {
-                set_expanded(false);
-            }
-        });
+        register_popover(button.popover);
     }
 
     public override void get_preferred_width(out int m, out int n)
@@ -178,6 +173,10 @@ public class Slat : Gtk.ApplicationWindow
 
     public void set_expanded(bool expanded)
     {
+        if (this.expanded == expanded) {
+            return;
+        }
+        this.expanded = expanded;
         if (!expanded) {
             scr = small_scr;
         } else {
