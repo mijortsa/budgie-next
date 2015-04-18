@@ -34,6 +34,7 @@ public class Slat : Gtk.ApplicationWindow
             set_visual(vis);
         }
         resizable = false;
+        app_paintable = true;
 
         // TODO: Track
         var mon = screen.get_primary_monitor();
