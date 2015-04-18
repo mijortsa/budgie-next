@@ -12,7 +12,7 @@
 namespace Budgie
 {
 
-public class Slat : Gtk.Window
+public class Slat : Gtk.ApplicationWindow
 {
 
     Gdk.Rectangle scr;
@@ -20,9 +20,11 @@ public class Slat : Gtk.Window
     Gdk.Rectangle small_scr;
     Gdk.Rectangle orig_scr;
 
-    public Slat()
+    Gtk.Box layout;
+
+    public Slat(Gtk.Application? app)
     {
-        Object(type_hint: Gdk.WindowTypeHint.DOCK);
+        Object(application: app, type_hint: Gdk.WindowTypeHint.DOCK);
         destroy.connect(Gtk.main_quit);
 
         var vis = screen.get_rgba_visual();
@@ -42,11 +44,37 @@ public class Slat : Gtk.Window
 
         scr = small_scr;
 
+        layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+        add(layout);
+
+        demo_code();
+
         realize();
         // Revisit to account for multiple monitors..
         move(0, 0);
         show_all();
         //present();
+    }
+
+    Gtk.MenuButton? mbutton(string title)
+    {
+        var label = new Gtk.Label(title);
+        label.use_markup = true;
+        var button = new Gtk.MenuButton();
+        button.use_popover = true;
+        button.add(label);
+        return button;
+    }
+
+    void demo_code()
+    {
+        var button = mbutton("Button 1");
+        layout.pack_start(button, false, false, 0);
+        var menu = new Menu();
+        var action = new PropertyAction("dark-theme", get_settings(), "gtk-application-prefer-dark-theme");
+        application.add_action(action);
+        menu.append("Dark theme", "app.dark-theme");
+        button.menu_model = menu;
     }
 
     public override void get_preferred_width(out int m, out int n)
@@ -74,10 +102,19 @@ public class Slat : Gtk.Window
 
 } // End namespace
 
-public static void main(string[] args)
+static Budgie.Slat instance = null;
+
+static void app_start(Application? app)
 {
-    Gtk.init(ref args);
-    var w = new Budgie.Slat();
-    Gtk.main();
-    w = null;
+    if (instance == null) {
+        instance = new Budgie.Slat(app as Gtk.Application);
+    }
+}
+
+public static int main(string[] args)
+{
+    var app = new Gtk.Application("com.solus-project.Slat", 0);
+    app.activate.connect(app_start);
+
+    return app.run();
 }
