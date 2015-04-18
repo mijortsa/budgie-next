@@ -105,7 +105,7 @@ public class NCenter : Gtk.Window
         header.margin_top = 40;
 
         var mpris = new MprisWidget();
-        mpris.margin_left = 40;
+        mpris.margin_left = 20;
         layout.pack_start(mpris, false, false, 0);
 
         layout.show_all();

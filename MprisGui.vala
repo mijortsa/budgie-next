@@ -9,7 +9,7 @@
  * (at your option) any later version.
  */
 
-const int BACKGROUND_SIZE = 250;
+const int BACKGROUND_SIZE = 160;
 
 /**
  * A fancier Gtk.Image, which forces a fade-effect across the bottom of the image
