@@ -12,6 +12,38 @@
 namespace Budgie
 {
 
+class PopoverManager {
+    HashTable<Gtk.Widget?,Gtk.Popover?> widgets;
+
+    unowned Slat? owner;
+
+    public PopoverManager(Slat? owner)
+    {
+        this.owner = owner;
+        widgets = new HashTable<Gtk.Widget?,Gtk.Popover?>(direct_hash, direct_equal);
+    }
+
+    public void register_popover(Gtk.Widget? widg, Gtk.Popover? popover)
+    {
+        if (widgets.contains(widg)) {
+            return;
+        }
+        if (widg is Gtk.MenuButton) {
+            (widg as Gtk.MenuButton).can_focus = false;
+        } 
+        /* TODO: Disconnect signals when deconstructing */
+        popover.map.connect(()=> {
+            owner.set_expanded(true);
+        });
+        popover.notify["visible"].connect(()=> {
+            if (!popover.get_visible()) {
+                owner.set_expanded(false);
+            }
+        });
+        widgets.insert(widg, popover);
+    }
+}
+
 public class Slat : Gtk.ApplicationWindow
 {
 
@@ -23,12 +55,15 @@ public class Slat : Gtk.ApplicationWindow
     Gtk.Box layout;
 
     PanelPosition position = PanelPosition.TOP;
+    PopoverManager manager;
     bool expanded = true;
 
     public Slat(Gtk.Application? app)
     {
         Object(application: app, type_hint: Gdk.WindowTypeHint.DOCK);
         destroy.connect(Gtk.main_quit);
+
+        manager = new PopoverManager(this);
 
         var vis = screen.get_rgba_visual();
         if (vis == null) {
@@ -93,7 +128,7 @@ public class Slat : Gtk.ApplicationWindow
         menu.append("Quit demo", "app.quit");
         button.menu_model = menu;
 
-        register_menu_button(button);
+        manager.register_popover(button, button.popover);
 
         /* Emulate Budgie Menu Applet */
         var mainbtn = new Gtk.Button.from_icon_name("start-here", Gtk.IconSize.SMALL_TOOLBAR);
@@ -106,39 +141,10 @@ public class Slat : Gtk.ApplicationWindow
             popover.show_all();
             return Gdk.EVENT_STOP;
         });
-        register_popover(popover);
+        manager.register_popover(mainbtn, popover);
         layout.pack_start(mainbtn, false, false, 10);
     }
 
-    /**
-     * Register a popover with expansion system. In future we'll add the
-     * ability for menubar like behaviour
-     *
-     * TODO: Expand immediately before and after change events
-     */
-    void register_popover(Gtk.Popover? popover)
-    {
-        if (popover == null) {
-            return;
-        }
-        popover.map.connect(()=> {
-            set_expanded(true);
-        });
-        popover.notify["visible"].connect(()=> {
-            if (!popover.get_visible()) {
-                set_expanded(false);
-            }
-        });
-    }
-
-    void register_menu_button(Gtk.MenuButton? button)
-    {
-        if (button == null || !button.use_popover) {
-            return;
-        }
-        button.can_focus = false;
-        register_popover(button.popover);
-    }
 
     public override void get_preferred_width(out int m, out int n)
     {
