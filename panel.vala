@@ -89,6 +89,13 @@ public class Slat : Gtk.ApplicationWindow
         var action = new PropertyAction("dark-theme", get_settings(), "gtk-application-prefer-dark-theme");
         application.add_action(action);
         menu.append("Dark theme", "app.dark-theme");
+
+        var saction = new SimpleAction("quit", null);
+        saction.activate.connect(()=> {
+            application.quit();
+        });
+        application.add_action(saction);
+        menu.append("Quit demo", "app.quit");
         button.menu_model = menu;
 
         register_menu_button(button);
