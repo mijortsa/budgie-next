@@ -33,6 +33,7 @@ public class Slat : Gtk.ApplicationWindow
         } else {
             set_visual(vis);
         }
+        resizable = false;
 
         // TODO: Track
         var mon = screen.get_primary_monitor();
@@ -46,6 +47,7 @@ public class Slat : Gtk.ApplicationWindow
 
         layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
         add(layout);
+        layout.valign = Gtk.Align.START;
 
         demo_code();
 
@@ -75,6 +77,24 @@ public class Slat : Gtk.ApplicationWindow
         application.add_action(action);
         menu.append("Dark theme", "app.dark-theme");
         button.menu_model = menu;
+
+        register_menu_button(button);
+    }
+
+    void register_menu_button(Gtk.MenuButton? button)
+    {
+        if (button == null || !button.use_popover) {
+            return;
+        }
+        button.can_focus = false;
+
+        button.popover.notify["visible"].connect(()=> {
+            if (button.popover.get_visible()) {
+                set_expanded(true);
+            } else {
+                set_expanded(false);
+            }
+        });
     }
 
     public override void get_preferred_width(out int m, out int n)
@@ -97,6 +117,22 @@ public class Slat : Gtk.ApplicationWindow
     {
         m = scr.height;
         n = scr.height;
+    }
+
+    public void set_expanded(bool expanded)
+    {
+        if (!expanded) {
+            scr = small_scr;
+        } else {
+            scr = orig_scr;
+        }
+        queue_resize();
+        while (Gtk.events_pending()) {
+            Gtk.main_iteration();
+        }
+        if (expanded) {
+            present();
+        }
     }
 }
 
