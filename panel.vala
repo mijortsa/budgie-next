@@ -60,8 +60,7 @@ public class Slat : Gtk.ApplicationWindow
 
         realize();
         Budgie.set_struts(this, position, intended_height);
-        // Revisit to account for multiple monitors..
-        move(0, 0);
+        move(orig_scr.x, orig_scr.y);
         show_all();
         set_expanded(false);
         //present();
