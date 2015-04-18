@@ -64,6 +64,8 @@ public class Fullsize : Gtk.ApplicationWindow
         move(0, 0);
         show_all();
         set_expanded(false);
+
+        warning("FOCUS BREAKS IN THIS DEMO!");
         //present();
     }
 
@@ -176,6 +178,8 @@ public class Fullsize : Gtk.ApplicationWindow
             {  x = 0, y = 0, width = exp_scr.width, height = exp_scr.height };
         var region = new Cairo.Region.rectangle(r);
         input_shape_combine_region(region);
+
+        can_focus = expanded;
 
         message("W: %d, H: %d", r.width, r.height);
         if (expanded) {
