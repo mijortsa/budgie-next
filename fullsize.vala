@@ -27,7 +27,7 @@ public class Fullsize : Gtk.ApplicationWindow
 
     public Fullsize(Gtk.Application? app)
     {
-        Object(application: app, type_hint: Gdk.WindowTypeHint.DOCK);
+        Object(application: app, type_hint: Gdk.WindowTypeHint.POPUP_MENU);
         destroy.connect(Gtk.main_quit);
 
         var vis = screen.get_rgba_visual();
