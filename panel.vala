@@ -183,9 +183,6 @@ public class Slat : Gtk.ApplicationWindow
             scr = orig_scr;
         }
         queue_resize();
-        while (Gtk.events_pending()) {
-            Gtk.main_iteration();
-        }
         if (expanded) {
             present();
         }
