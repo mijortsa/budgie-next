@@ -145,12 +145,11 @@ public class Slat : Gtk.ApplicationWindow
         demo_code();
 
         ncenter = new NCenter(intended_height - 5);
-        ncenter.size_allocate.connect(()=> {
-            if (!ncenter.get_visible()) {
-                return;
-            }
-            shadow.required_size = (main_layout.get_allocated_width() - ncenter.get_allocated_width())+5;
-            shadow.queue_resize();
+        ncenter.bind_property("required-size", shadow, "required-size", BindingFlags.DEFAULT, (b,v, ref v2)=> {
+            var d = (main_layout.get_allocated_width()-v.get_int()) + 5;
+            v2 = Value(typeof(int));
+            v2.set_int(d);
+            return true;
         });
         ncenter.notify["visible"].connect(()=> {
             if (!ncenter.get_visible()) {

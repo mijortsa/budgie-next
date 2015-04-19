@@ -50,6 +50,11 @@ public class NCenter : Gtk.Window
     public double nscale {
         public set {
             scale = value;
+            if (nscale > 0.0 && nscale < 1.0) {
+                required_size = (int)(get_allocated_width() * nscale);
+            } else {
+                required_size = get_allocated_width();
+            }
             queue_draw();
         }
         public get {
@@ -59,6 +64,8 @@ public class NCenter : Gtk.Window
 
     // Hacky, but just says how far to offset our window.
     int offset;
+
+    public int required_size { public get ; protected set; }
 
     public NCenter(int offset)
     {

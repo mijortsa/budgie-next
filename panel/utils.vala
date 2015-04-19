@@ -114,7 +114,17 @@ public class VShadowBlock : Gtk.EventBox
 public class HShadowBlock : Gtk.EventBox
 {
 
-    public int required_size;
+    private int size;
+
+    public int required_size {
+        public set {
+            size = value;
+            queue_resize();
+        }
+        public get {
+            return size;
+        }
+    }
 
     public HShadowBlock()
     {
