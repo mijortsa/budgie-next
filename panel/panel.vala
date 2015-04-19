@@ -180,7 +180,7 @@ public class Slat : Gtk.ApplicationWindow
     void load_css()
     {
         try {
-            var f = File.new_for_path("style.css");
+            var f = File.new_for_uri("resource://com/solus-project/budgie/panel/style.css");
             var css = new Gtk.CssProvider();
             css.load_from_file(f);
             Gtk.StyleContext.add_provider_for_screen(screen, css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);            
