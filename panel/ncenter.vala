@@ -113,6 +113,37 @@ public class NCenter : Gtk.Window
         audio.margin_right = 20;
         layout.pack_start(audio, false, false, 0);
 
+        var bottom = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+        bottom.halign = Gtk.Align.CENTER;
+        bottom.margin_bottom = 40;
+        layout.pack_end(bottom, false, false, 0);
+
+        var btn = new Gtk.Button.from_icon_name("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        btn.clicked.connect(()=> {
+            /* TODO: Drop gnome-control-center like its hot. */
+            try {
+                Process.spawn_command_line_async("gnome-control-center");
+            } catch (Error e) {
+                message("Error invoking gnome-control-center: %s", e.message);
+            }
+        });
+        btn.halign = Gtk.Align.START;
+        btn.relief = Gtk.ReliefStyle.NONE;
+        btn.margin_left = 20;
+        bottom.pack_start(btn, false, false, 0);
+        btn = new Gtk.Button.from_icon_name("system-shutdown-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        btn.clicked.connect(()=> {
+            try {
+                Process.spawn_command_line_async("budgie-session-dialog");
+            } catch (Error e) {
+                message("Error invoking end session dialog: %s", e.message);
+            }
+        });
+        btn.halign = Gtk.Align.START;
+        btn.relief = Gtk.ReliefStyle.NONE;
+        btn.margin_left = 20;
+        bottom.pack_start(btn, false, false, 0);
+
         layout.show_all();
 
         placement();
