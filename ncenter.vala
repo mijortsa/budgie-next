@@ -45,10 +45,14 @@ public class NCenter : Gtk.Window
     Gtk.Box layout;
     Gtk.Box main_layout;
 
-    public NCenter()
+    // Hacky, but just says how far to offset our window.
+    int offset;
+
+    public NCenter(int offset)
     {
         Object(type_hint: Gdk.WindowTypeHint.DOCK);
         destroy.connect(Gtk.main_quit);
+        this.offset = offset;
 
         get_settings().set_property("gtk-application-prefer-dark-theme", true);
 
@@ -60,7 +64,6 @@ public class NCenter : Gtk.Window
         }
 
         resizable = false;
-        load_css();
         set_keep_above(true);
 
         layout = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
@@ -100,27 +103,7 @@ public class NCenter : Gtk.Window
         if (!get_realized()) {
             realize();
         }
-        move(scr.x + (scr.width-width), scr.y);
-        set_size_request(width, scr.height);
+        move(scr.x + (scr.width-width), scr.y+offset);
+        set_size_request(width, scr.height-offset);
     }
-
-    void load_css()
-    {
-        try {
-            var f = File.new_for_path("style.css");
-            var css = new Gtk.CssProvider();
-            css.load_from_file(f);
-            Gtk.StyleContext.add_provider_for_screen(screen, css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);            
-        } catch (Error e) {
-            warning("CSS Missing: %s", e.message);
-        }
-    }
-}
-
-public static void main(string[] args)
-{
-    Gtk.init(ref args);
-    var center = new NCenter();
-    Gtk.main();
-    center = null;
 }

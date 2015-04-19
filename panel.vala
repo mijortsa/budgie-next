@@ -81,6 +81,8 @@ public class Slat : Gtk.ApplicationWindow
     PopoverManager manager;
     bool expanded = true;
 
+    NCenter ncenter;
+
     public Slat(Gtk.Application? app)
     {
         Object(application: app, type_hint: Gdk.WindowTypeHint.DOCK);
@@ -125,6 +127,8 @@ public class Slat : Gtk.ApplicationWindow
         main_layout.pack_start(shadow, false, false, 0);
 
         demo_code();
+
+        ncenter = new NCenter(intended_height - 5);
 
         realize();
         Budgie.set_struts(this, position, intended_height);
