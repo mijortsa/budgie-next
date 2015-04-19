@@ -2,6 +2,9 @@
     background-color: alpha(black, 0.66);
 }
 
+GtkPopover {
+    background-color: alpha(black, 0.73);
+}
 
 .notification-center .header-widget {
     color: alpha(white, 0.80);
@@ -31,4 +34,31 @@ NCenter {
 
 ClientImage {
     background-color: transparent;
+}
+
+
+GtkPopover GtkListBox {
+    background-image: none;
+    background-color: alpha(black, 0.0);
+    border-radius: 6px;
+}
+GtkPopover GtkListBoxRow {
+    background-image: none;
+    background-color: alpha(black, 0.0);
+}
+GtkPopover .trough {
+    background-color: alpha(black, 0.0);
+}
+
+GtkPopover .entry,
+GtkPopover .entry:focused,
+GtkPopover .entry:selected,
+GtkPopover .entry:active,
+GtkPopover .entry:hover
+{
+    border: 1px solid alpha(white, 0.0);
+   border-image: none;
+    background-image: none;
+    background-color: alpha(white, 0.0);
+    box-shadow: none;
 }

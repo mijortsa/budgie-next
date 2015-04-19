@@ -181,6 +181,7 @@ public class Slat : Gtk.ApplicationWindow
     {
         /* Emulate Budgie Menu Applet */
         var mainbtn = new Gtk.Button.from_icon_name("start-here", Gtk.IconSize.SMALL_TOOLBAR);
+        mainbtn.margin_left = 10;
         mainbtn.relief = Gtk.ReliefStyle.NONE;
         mainbtn.can_focus = false;
         var popover = new BudgieMenuWindow(mainbtn);
