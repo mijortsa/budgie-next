@@ -16,11 +16,20 @@ class PopoverManager {
     HashTable<Gtk.Widget?,Gtk.Popover?> widgets;
 
     unowned Slat? owner;
+    unowned Gtk.Popover? visible_popover = null;
 
     public PopoverManager(Slat? owner)
     {
         this.owner = owner;
         widgets = new HashTable<Gtk.Widget?,Gtk.Popover?>(direct_hash, direct_equal);
+
+        owner.focus_out_event.connect(()=>{
+            if (visible_popover != null) {
+                visible_popover.hide();
+                visible_popover = null;
+            }
+            return Gdk.EVENT_PROPAGATE;
+        });
     }
 
     public void register_popover(Gtk.Widget? widg, Gtk.Popover? popover)
@@ -38,6 +47,8 @@ class PopoverManager {
         popover.notify["visible"].connect(()=> {
             if (!popover.get_visible()) {
                 owner.set_expanded(false);
+            } else {
+                this.visible_popover = popover;
             }
         });
         widgets.insert(widg, popover);
