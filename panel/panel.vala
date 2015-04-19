@@ -215,6 +215,7 @@ public class Slat : Gtk.ApplicationWindow
         layout.pack_end(toggle, false, false, 0);
 
         Timeout.add_seconds_full(GLib.Priority.LOW, 1, update_clock);
+        update_clock();
     }
 
     protected bool update_clock()
