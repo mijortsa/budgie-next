@@ -9,32 +9,6 @@
  * (at your option) any later version.
  */
 
-/**
- * Alternative to a separator, gives a shadow effect :)
- *
- * @note Until we need otherwise, this is a vertical only widget..
- */
-public class ShadowBlock : Gtk.EventBox
-{
-
-    public ShadowBlock()
-    {
-        get_style_context().add_class("shadow-block");
-    }
-
-    public override void get_preferred_width(out int min, out int nat)
-    {
-        min = 5;
-        nat = 5;
-    }
-
-    public override void get_preferred_width_for_height(int height, out int min, out int nat)
-    {
-        min = 5;
-        nat = 5;
-    }
-}
-
 public class HeaderWidget : Gtk.EventBox
 {
     private string _title;
@@ -93,7 +67,7 @@ public class NCenter : Gtk.Window
         main_layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
         add(main_layout);
 
-        var shadow = new ShadowBlock();
+        var shadow = new Budgie.VShadowBlock();
         main_layout.pack_start(shadow, false, false, 0);
         main_layout.pack_start(layout, true, true, 0);
 
