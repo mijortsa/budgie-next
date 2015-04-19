@@ -2,6 +2,10 @@
     background-color: alpha(black, 0.66);
 }
 
+.budgie-container {
+    background-color: transparent;
+}
+
 /*
  * This just looks fugly.
  * GtkPopover {

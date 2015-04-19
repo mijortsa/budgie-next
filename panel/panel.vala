@@ -112,6 +112,7 @@ public class Slat : Gtk.ApplicationWindow
         }
         resizable = false;
         app_paintable = true;
+        get_style_context().add_class("budgie-container");
 
         // TODO: Track
         var mon = screen.get_primary_monitor();
