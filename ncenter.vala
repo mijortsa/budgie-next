@@ -80,7 +80,7 @@ public class NCenter : Gtk.Window
         /* Demo code */
         var header = new HeaderWidget("Music");
         layout.pack_start(header, false, false, 2);
-        header.margin_top = 40;
+        header.margin_top = 10;
 
         var mpris = new MprisWidget();
         mpris.margin_left = 20;
