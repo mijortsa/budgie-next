@@ -137,7 +137,7 @@ public class Slat : Gtk.ApplicationWindow
         });
 
         realize();
-        Budgie.set_struts(this, position, intended_height);
+        Budgie.set_struts(this, position, intended_height - 5);
         move(orig_scr.x, orig_scr.y);
         show_all();
         set_expanded(false);
