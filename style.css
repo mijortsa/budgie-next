@@ -3,7 +3,7 @@
 }
 
 GtkPopover {
-    background-color: alpha(black, 0.73);
+    background-color: alpha(black, 0.85);
 }
 
 .notification-center .header-widget {
