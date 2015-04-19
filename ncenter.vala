@@ -78,7 +78,7 @@ public class NCenter : Gtk.Window
 
 
         /* Demo code */
-        var header = new HeaderWidget("Music");
+        var header = new HeaderWidget("Media");
         layout.pack_start(header, false, false, 2);
         header.margin_top = 10;
 
