@@ -99,7 +99,7 @@ public class NCenter : Gtk.Window
         var mon = screen.get_primary_monitor();
         screen.get_monitor_geometry(mon, out scr);
 
-        var width = (int) (scr.width * 0.25);
+        var width = (int) (scr.width * 0.16);
         if (!get_realized()) {
             realize();
         }
