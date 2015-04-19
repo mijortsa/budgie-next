@@ -2,9 +2,11 @@
     background-color: alpha(black, 0.66);
 }
 
-GtkPopover {
+/*
+ * This just looks fugly.
+ * GtkPopover {
     background-color: alpha(black, 0.85);
-}
+}*/
 
 .notification-center .header-widget {
     color: alpha(white, 0.80);
@@ -12,8 +14,17 @@ GtkPopover {
     background-color: alpha(black, 0.26);
 }
 
+.notification-center .button, .notification-center .check {
+    color: white;
+}
+
 NCenter {
     background-color: transparent;
+    color: white;
+}
+
+.main-panel GtkButton {
+    color: white;
 }
 
 /* Identical to the panel shadow.left */

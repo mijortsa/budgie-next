@@ -54,8 +54,6 @@ public class NCenter : Gtk.Window
         destroy.connect(Gtk.main_quit);
         this.offset = offset;
 
-        get_settings().set_property("gtk-application-prefer-dark-theme", true);
-
         var vis = screen.get_rgba_visual();
         if (vis == null) {
             warning("No RGBA functionality");
