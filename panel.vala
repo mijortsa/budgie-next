@@ -91,6 +91,7 @@ public class Slat : Gtk.ApplicationWindow
     PanelPosition position = PanelPosition.TOP;
     PopoverManager manager;
     bool expanded = true;
+    Gtk.ToggleButton? toggle;
 
     NCenter ncenter;
 
@@ -206,14 +207,24 @@ public class Slat : Gtk.ApplicationWindow
         manager.register_popover(mainbtn, popover);
         layout.pack_start(mainbtn, false, false, 10);
 
-        var toggle = new Gtk.ToggleButton.with_label("00:00:00");
+        toggle = new Gtk.ToggleButton.with_label("00:00:00");
         toggle.relief = Gtk.ReliefStyle.NONE;
         toggle.clicked.connect(()=> {
             ncenter.set_expanded(toggle.get_active());
         });
         layout.pack_end(toggle, false, false, 0);
+
+        Timeout.add_seconds_full(GLib.Priority.LOW, 1, update_clock);
     }
 
+    protected bool update_clock()
+    {
+        var time = new DateTime.now_local();
+        var ctime = time.format("%H:%M");
+        (toggle.get_child() as Gtk.Label).set_markup(ctime);
+
+        return true;
+    }
 
     public override void get_preferred_width(out int m, out int n)
     {
