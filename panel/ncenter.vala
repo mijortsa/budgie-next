@@ -150,7 +150,7 @@ public class NCenter : Gtk.Window
         if (!get_realized()) {
             realize();
         }
-        move(scr.x + (scr.width-width), scr.y+offset);
         set_size_request(width, scr.height-offset);
+        move(scr.x + (scr.width-width), scr.y+offset);
     }
 }
