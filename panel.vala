@@ -169,23 +169,6 @@ public class Slat : Gtk.ApplicationWindow
 
     void demo_code()
     {
-        var button = mbutton("Button 1");
-        layout.pack_start(button, false, false, 0);
-        var menu = new Menu();
-        var action = new PropertyAction("dark-theme", get_settings(), "gtk-application-prefer-dark-theme");
-        application.add_action(action);
-        menu.append("Dark theme", "app.dark-theme");
-
-        var saction = new SimpleAction("quit", null);
-        saction.activate.connect(()=> {
-            application.quit();
-        });
-        application.add_action(saction);
-        menu.append("Quit demo", "app.quit");
-        button.menu_model = menu;
-
-        manager.register_popover(button, button.popover);
-
         /* Emulate Budgie Menu Applet */
         var mainbtn = new Gtk.Button.from_icon_name("start-here", Gtk.IconSize.SMALL_TOOLBAR);
         mainbtn.relief = Gtk.ReliefStyle.NONE;
