@@ -96,12 +96,38 @@ public class NCenter : Gtk.Window
      * In future this will handle sliding ncenter into view.. */
     public void set_expanded(bool exp)
     {
+        double old_op, new_op;
         if (exp) {
-            placement();
-            present();
+            old_op = 0.0;
+            new_op = 1.0;
         } else {
-            hide();
+            old_op = 1.0;
+            new_op = 0.0;
         }
+        opacity = old_op;
+
+        if (exp) {
+            show_all();
+        }
+        var anim = new Budgie.Animation();
+        anim.widget = this;
+        anim.length = 260 * Budgie.MSECOND;
+        anim.tween = Budgie.circ_ease_out;
+        anim.changes = new Budgie.PropChange[] {
+            Budgie.PropChange() {
+                property = "opacity",
+                old = old_op,
+                @new = new_op
+            },
+        };
+
+        anim.start((a)=> {
+            if (a.widget.opacity == 0.0) {
+                a.widget.hide();
+            } else {
+                (a.widget as Gtk.Window).present();
+            }
+        });
     }
 
     void placement()
