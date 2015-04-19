@@ -126,14 +126,24 @@ public class Slat : Gtk.ApplicationWindow
         shadow.hexpand = false;
         shadow.halign = Gtk.Align.START;
         shadow.show_all();
+        shadow.required_size = orig_scr.width;
         main_layout.pack_start(shadow, false, false, 0);
 
         demo_code();
 
         ncenter = new NCenter(intended_height - 5);
         ncenter.size_allocate.connect(()=> {
+            if (!ncenter.get_visible()) {
+                return;
+            }
             shadow.required_size = (main_layout.get_allocated_width() - ncenter.get_allocated_width())+5;
             shadow.queue_resize();
+        });
+        ncenter.notify["visible"].connect(()=> {
+            if (!ncenter.get_visible()) {
+                shadow.required_size = orig_scr.width;
+                shadow.queue_resize();
+            }
         });
 
         realize();
@@ -183,6 +193,13 @@ public class Slat : Gtk.ApplicationWindow
         });
         manager.register_popover(mainbtn, popover);
         layout.pack_start(mainbtn, false, false, 10);
+
+        var toggle = new Gtk.ToggleButton.with_label("00:00:00");
+        toggle.relief = Gtk.ReliefStyle.NONE;
+        toggle.clicked.connect(()=> {
+            ncenter.set_expanded(toggle.get_active());
+        });
+        layout.pack_end(toggle, false, false, 0);
     }
 
 

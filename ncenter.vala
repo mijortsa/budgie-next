@@ -90,7 +90,18 @@ public class NCenter : Gtk.Window
 
         placement();
         get_child().show_all();
-        present();
+    }
+
+    /**
+     * In future this will handle sliding ncenter into view.. */
+    public void set_expanded(bool exp)
+    {
+        if (exp) {
+            placement();
+            present();
+        } else {
+            hide();
+        }
     }
 
     void placement()
