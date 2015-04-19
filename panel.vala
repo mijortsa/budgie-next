@@ -123,12 +123,18 @@ public class Slat : Gtk.ApplicationWindow
 
         /* Shadow.. */
         var shadow = new Budgie.HShadowBlock();
+        shadow.hexpand = false;
+        shadow.halign = Gtk.Align.START;
         shadow.show_all();
         main_layout.pack_start(shadow, false, false, 0);
 
         demo_code();
 
         ncenter = new NCenter(intended_height - 5);
+        ncenter.size_allocate.connect(()=> {
+            shadow.required_size = (main_layout.get_allocated_width() - ncenter.get_allocated_width())+5;
+            shadow.queue_resize();
+        });
 
         realize();
         Budgie.set_struts(this, position, intended_height);

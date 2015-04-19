@@ -114,6 +114,8 @@ public class VShadowBlock : Gtk.EventBox
 public class HShadowBlock : Gtk.EventBox
 {
 
+    public int required_size;
+
     public HShadowBlock()
     {
         get_style_context().add_class("shadow-block");
@@ -130,6 +132,18 @@ public class HShadowBlock : Gtk.EventBox
     {
         min = 5;
         nat = 5;
+    }
+
+    public override void get_preferred_width(out int min, out int nat)
+    {
+        min = required_size;
+        nat = required_size;
+    }
+
+    public override void get_preferred_width_for_height(int height, out int min, out int nat)
+    {
+        min = required_size;
+        nat = required_size;
     }
 }
 
