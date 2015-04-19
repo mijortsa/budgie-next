@@ -44,15 +44,38 @@ class PopoverManager {
     }
 }
 
+public class MainPanel : Gtk.Box
+{
+    public int intended_size;
+
+    public MainPanel(int size)
+    {
+        Object(orientation: Gtk.Orientation.HORIZONTAL);
+        this.intended_size = size;
+        get_style_context().add_class("main-panel");
+    }
+
+    public override void get_preferred_height(out int m, out int n)
+    {
+        m = intended_size;
+        n = intended_size;
+    }
+    public override void get_preferred_height_for_width(int w, out int m, out int n)
+    {
+        m = intended_size;
+        n = intended_size;
+    }
+}
 public class Slat : Gtk.ApplicationWindow
 {
 
     Gdk.Rectangle scr;
-    int intended_height = 42;
+    int intended_height = 42 + 5;
     Gdk.Rectangle small_scr;
     Gdk.Rectangle orig_scr;
 
     Gtk.Box layout;
+    Gtk.Box main_layout;
 
     PanelPosition position = PanelPosition.TOP;
     PopoverManager manager;
@@ -62,6 +85,8 @@ public class Slat : Gtk.ApplicationWindow
     {
         Object(application: app, type_hint: Gdk.WindowTypeHint.DOCK);
         destroy.connect(Gtk.main_quit);
+
+        load_css();
 
         manager = new PopoverManager(this);
 
@@ -84,12 +109,20 @@ public class Slat : Gtk.ApplicationWindow
 
         scr = small_scr;
 
-        layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
-        layout.set_size_request(scr.width, intended_height);
+        main_layout = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+        add(main_layout);
+
+
+        layout = new MainPanel(intended_height - 5);
         layout.vexpand = false;
         vexpand = false;
-        add(layout);
-        layout.valign = Gtk.Align.START;
+        main_layout.pack_start(layout, false, false, 0);
+        main_layout.valign = Gtk.Align.START;
+
+        /* Shadow.. */
+        var shadow = new Budgie.HShadowBlock();
+        shadow.show_all();
+        main_layout.pack_start(shadow, false, false, 0);
 
         demo_code();
 
@@ -108,7 +141,20 @@ public class Slat : Gtk.ApplicationWindow
         var button = new Gtk.MenuButton();
         button.use_popover = true;
         button.add(label);
+        button.relief = Gtk.ReliefStyle.NONE;
         return button;
+    }
+
+    void load_css()
+    {
+        try {
+            var f = File.new_for_path("style.css");
+            var css = new Gtk.CssProvider();
+            css.load_from_file(f);
+            Gtk.StyleContext.add_provider_for_screen(screen, css, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);            
+        } catch (Error e) {
+            warning("CSS Missing: %s", e.message);
+        }
     }
 
     void demo_code()
@@ -132,6 +178,7 @@ public class Slat : Gtk.ApplicationWindow
 
         /* Emulate Budgie Menu Applet */
         var mainbtn = new Gtk.Button.from_icon_name("start-here", Gtk.IconSize.SMALL_TOOLBAR);
+        mainbtn.relief = Gtk.ReliefStyle.NONE;
         mainbtn.can_focus = false;
         var popover = new BudgieMenuWindow(mainbtn);
         mainbtn.button_press_event.connect((e)=> {
