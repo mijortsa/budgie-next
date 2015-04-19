@@ -45,6 +45,18 @@ public class NCenter : Gtk.Window
     Gtk.Box layout;
     Gtk.Box main_layout;
 
+    private double scale = 0.0;
+
+    public double nscale {
+        public set {
+            scale = value;
+            queue_draw();
+        }
+        public get {
+            return scale;
+        }
+    }
+
     // Hacky, but just says how far to offset our window.
     int offset;
 
@@ -100,6 +112,26 @@ public class NCenter : Gtk.Window
         get_child().show_all();
     }
 
+    public override bool draw(Cairo.Context cr)
+    {
+        if (nscale == 0.0 || nscale == 1.0) {
+            return base.draw(cr);
+        }
+
+        Gtk.Allocation alloc;
+        get_allocation(out alloc);
+        var buffer = new Cairo.ImageSurface(Cairo.Format.ARGB32, alloc.width, alloc.height);
+        var cr2 = new Cairo.Context(buffer);
+
+        propagate_draw(get_child(), cr2);
+        var width = alloc.width * nscale;
+
+        cr.set_source_surface(buffer, alloc.width-width, 0);
+        cr.paint();
+
+        return Gdk.EVENT_STOP;
+    }
+
     /**
      * In future this will handle sliding ncenter into view.. */
     public void set_expanded(bool exp)
@@ -112,25 +144,31 @@ public class NCenter : Gtk.Window
             old_op = 1.0;
             new_op = 0.0;
         }
-        opacity = old_op;
+        nscale = old_op;
 
         if (exp) {
             show_all();
         }
+
         var anim = new Budgie.Animation();
         anim.widget = this;
-        anim.length = 260 * Budgie.MSECOND;
-        anim.tween = Budgie.circ_ease_out;
+        anim.length = 270 * Budgie.MSECOND;
+        anim.tween = Budgie.sine_ease_in;
         anim.changes = new Budgie.PropChange[] {
+            Budgie.PropChange() {
+                property = "nscale",
+                old = old_op,
+                @new = new_op
+            },
             Budgie.PropChange() {
                 property = "opacity",
                 old = old_op,
                 @new = new_op
-            },
+            }
         };
 
         anim.start((a)=> {
-            if (a.widget.opacity == 0.0) {
+            if ((a.widget as NCenter).nscale == 0.0) {
                 a.widget.hide();
             } else {
                 (a.widget as Gtk.Window).present();
