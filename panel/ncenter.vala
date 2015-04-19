@@ -81,10 +81,20 @@ public class NCenter : Gtk.Window
         var header = new HeaderWidget("Media");
         layout.pack_start(header, false, false, 2);
         header.margin_top = 10;
+        header.margin_bottom = 10;
 
         var mpris = new MprisWidget();
         mpris.margin_left = 20;
         layout.pack_start(mpris, false, false, 0);
+
+        header = new HeaderWidget("Audio");
+        layout.pack_start(header, false, false, 2);
+        header.margin_top = 20;
+        header.margin_bottom = 10;
+        var audio = new AudioPane();
+        audio.margin_left = 20;
+        audio.margin_right = 20;
+        layout.pack_start(audio, false, false, 0);
 
         layout.show_all();
 

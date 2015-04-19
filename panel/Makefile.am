@@ -25,6 +25,7 @@ budgie_next_panel_SOURCES = \
 	budgie-panel-resources.h \
 	budgie-panel-resources.c \
 	Animation.vala \
+	AudioPane.vala \
 	BudgieMenuWindow.vala \
 	MprisClient.vala \
 	MprisGui.vala \
@@ -39,6 +40,8 @@ budgie_next_panel_CFLAGS = \
 	$(GTK3_CFLAGS) \
 	$(WNCK3_CFLAGS) \
 	$(GMENU_CFLAGS) \
+	$(GVC_CFLAGS) \
+	-I${top_srcdir}/gvc/ \
 	-DGMENU_I_KNOW_THIS_IS_UNSTABLE \
 	-DMODULE_DIR=\"$(MODULEDIR)\" \
 	-DMODULE_DATA_DIR=\"$(MODULE_DATA_DIR)\" \
@@ -51,9 +54,13 @@ budgie_next_panel_LDADD = \
 	$(GTK3_LIBS) \
 	$(WNCK3_LIBS) \
 	$(GMENU_LIBS) \
+	$(GVC_LIBS) \
+	../gvc/libgvc.la \
 	-lm
 
 budgie_next_panel_VALAFLAGS = \
+	--vapidir=${top_srcdir} \
+	--pkg gvc-1.0 \
 	--pkg gtk+-3.0 \
 	--pkg libwnck-3.0 \
 	--pkg gio-unix-2.0 \
