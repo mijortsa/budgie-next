@@ -73,7 +73,7 @@ public class NCenter : Gtk.Window
 
     public NCenter()
     {
-        Object(type_hint: Gdk.WindowTypeHint.NOTIFICATION);
+        Object(type_hint: Gdk.WindowTypeHint.DOCK);
         destroy.connect(Gtk.main_quit);
 
         get_settings().set_property("gtk-application-prefer-dark-theme", true);
@@ -87,6 +87,7 @@ public class NCenter : Gtk.Window
 
         resizable = false;
         load_css();
+        set_keep_above(true);
 
         layout = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
         main_layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
