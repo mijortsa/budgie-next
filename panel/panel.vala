@@ -161,9 +161,30 @@ public class Slat : Gtk.ApplicationWindow
         realize();
         Budgie.set_struts(this, position, intended_height - 5);
         move(orig_scr.x, orig_scr.y);
-        show_all();
+        get_child().show_all();
         set_expanded(false);
-        //present();
+
+        Idle.add(fade_in);
+    }
+
+    bool fade_in()
+    {
+        opacity = 0.0;
+        show();
+        var anim = new Budgie.Animation();
+        anim.widget = this;
+        anim.length = 400 * Budgie.MSECOND;
+        anim.tween = Budgie.sine_ease_in;
+        anim.changes = new Budgie.PropChange[] {
+            Budgie.PropChange() {
+                property = "opacity",
+                old = 0.0,
+                @new = 1.0
+            }
+        };
+
+        anim.start(null);
+        return false;
     }
 
     Gtk.MenuButton? mbutton(string title)
