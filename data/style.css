@@ -31,6 +31,10 @@ NCenter {
     color: white;
 }
 
+.button:hover {
+    color: @menu_selected_bg_color;
+}
+
 /* Identical to the panel shadow.left */
 .shadow-block.vertical {
     background-color: transparent;
