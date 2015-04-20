@@ -116,9 +116,14 @@ public class NCenter : Gtk.Window
         layout.pack_start(audio, false, false, 0);
 
         var bottom = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+        var wrap = new Gtk.EventBox();
+        bottom.margin_top = 10;
+        bottom.margin_bottom = 10;
+        wrap.get_style_context().add_class("header-widget");
         bottom.halign = Gtk.Align.CENTER;
-        bottom.margin_bottom = 40;
-        layout.pack_end(bottom, false, false, 0);
+        wrap.margin_bottom = 40;
+        wrap.add(bottom);
+        layout.pack_end(wrap, false, false, 0);
 
         var btn = new Gtk.Button.from_icon_name("preferences-system-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
         btn.clicked.connect(()=> {
