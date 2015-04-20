@@ -346,6 +346,8 @@ public static Gtk.Widget create_row(string name, string? icon, Icon? gicon = nul
     img.margin_left = 3;
     box.pack_start(img, false, false, 0);
     var label = new Gtk.Label(name);
+    label.set_line_wrap(true);
+    label.set_line_wrap_mode(Pango.WrapMode.WORD);
     label.halign = Gtk.Align.START;
     box.pack_start(label, true, true, 0);
 
