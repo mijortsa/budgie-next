@@ -44,6 +44,8 @@ public class NCenter : Gtk.Window
 {
     Gtk.Box layout;
     Gtk.Box main_layout;
+    int our_width;
+    int our_height;
 
     private double scale = 0.0;
 
@@ -214,6 +216,30 @@ public class NCenter : Gtk.Window
         });
     }
 
+    public override void get_preferred_width(out int m, out int n)
+    {
+        m = our_width;
+        n = our_width;
+    }
+
+    public override void get_preferred_width_for_height(int h, out int m, out int n)
+    {
+        m = our_width;
+        n = our_width;
+    }
+
+    public override void get_preferred_height(out int m, out int n)
+    {
+        m = our_height;
+        n = our_height;
+    }
+
+    public override void get_preferred_height_for_width(int w, out int m, out int n)
+    {
+        m = our_height;
+        n = our_height;
+    }
+
     void placement()
     {
         Gdk.Rectangle scr;
@@ -221,10 +247,11 @@ public class NCenter : Gtk.Window
         screen.get_monitor_geometry(mon, out scr);
 
         var width = (int) (scr.width * 0.16);
+        our_width = width;
+        our_height = scr.height - offset;
         if (!get_realized()) {
             realize();
         }
-        set_size_request(width, scr.height-offset);
         move(scr.x + (scr.width-width), scr.y+offset);
     }
 }
