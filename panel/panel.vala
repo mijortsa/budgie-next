@@ -242,7 +242,7 @@ public class Slat : Gtk.ApplicationWindow
     protected bool update_clock()
     {
         var time = new DateTime.now_local();
-        var ctime = time.format("%H:%M");
+        var ctime = time.format("%X");
         (toggle.get_child() as Gtk.Label).set_markup(ctime);
 
         return true;
