@@ -31,7 +31,7 @@ NCenter {
     color: white;
 }
 
-.button:hover {
+.button:hover, .button:checked {
     color: @menu_selected_bg_color;
 }
 
