@@ -9,6 +9,12 @@
  * (at your option) any later version.
  */
 
+[DBus (name="org.freedesktop.DisplayManager.Seat")]
+public interface DMSeat : Object
+{
+    public abstract void lock() throws IOError;
+}
+
 public class HeaderWidget : Gtk.EventBox
 {
     private string _title;
@@ -48,6 +54,7 @@ public class NCenter : Gtk.Window
     Gtk.Box main_layout;
     int our_width;
     int our_height;
+    DMSeat? proxy;
 
     private double scale = 0.0;
 
@@ -153,6 +160,20 @@ public class NCenter : Gtk.Window
         btn.margin_left = 20;
         bottom.pack_start(btn, false, false, 0);
 
+        btn = new Gtk.Button.from_icon_name("system-lock-screen-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        btn.clicked.connect(()=> {
+            lock_screen();
+        });
+        btn.halign = Gtk.Align.START;
+        btn.relief = Gtk.ReliefStyle.NONE;
+        btn.margin_left = 20;
+        bottom.pack_start(btn, false, false, 0);
+
+        var path = Environment.get_variable("XDG_SEAT_PATH");
+        if (path == null) {
+            btn.no_show_all = true;
+            btn.hide();
+        }
         layout.show_all();
 
         placement();
@@ -221,6 +242,22 @@ public class NCenter : Gtk.Window
                 (a.widget as Gtk.Window).present();
             }
         });
+    }
+
+    void lock_screen()
+    {
+        var path = Environment.get_variable("XDG_SEAT_PATH");
+
+        try {
+            if (proxy == null) {
+                proxy = Bus.get_proxy_sync(BusType.SYSTEM, "org.freedesktop.DisplayManager", path);
+            }
+            proxy.lock();
+        } catch (Error e) {
+            warning(e.message);
+            proxy = null;
+            return;
+        }
     }
 
     public override void get_preferred_width(out int m, out int n)
