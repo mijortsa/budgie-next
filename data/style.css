@@ -81,3 +81,39 @@ GtkPopover .entry:hover
     background-color: alpha(white, 0.0);
     box-shadow: none;
 }
+
+
+/** Taken from budgie panel! */
+/** Selected window highlight on icon tasklist */
+.budgie-icon-tasklist {
+    border-color: white;
+}
+.budgie-panel .launcher,
+PanelToplevel .launcher {
+    border: 2px solid alpha(white, 0.0);
+    background-image: none;
+    transition: 100ms ease-in;
+}
+.budgie-panel .launcher:hover,
+PanelToplevel .launcher:hover {
+    border: 2px solid alpha(white, 0.0);
+    border-bottom: 2px solid alpha(white, 0.5);
+}
+
+/* Top launchers */
+.top .launcher:hover {
+    border: 2px solid alpha(white, 0.0);
+    border-top: 2px solid alpha(white, 0.5); 
+}
+
+/* Left hand side launchers */
+.left .launcher:hover {
+    border: 2px solid alpha(white, 0.0);
+    border-left: 2px solid alpha(white, 0.5);
+}
+
+/* Right hand side launchers */
+.right .launcher:hover {
+    border: 2px solid alpha(white, 0.0);
+    border-right: 2px solid alpha(white, 0.5);
+}

@@ -27,6 +27,7 @@ budgie_next_panel_SOURCES = \
 	Animation.vala \
 	AudioPane.vala \
 	BudgieMenuWindow.vala \
+	IconTasklistApplet.vala \
 	MprisClient.vala \
 	MprisGui.vala \
 	MprisWidget.vala \

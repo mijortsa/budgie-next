@@ -228,6 +228,9 @@ public class Slat : Gtk.ApplicationWindow
         manager.register_popover(mainbtn, popover);
         layout.pack_start(mainbtn, false, false, 10);
 
+        var tasklist = new IconTasklistApplet();
+        layout.pack_start(tasklist, true, true, 10);
+
         toggle = new Gtk.ToggleButton.with_label("00:00:00");
         toggle.relief = Gtk.ReliefStyle.NONE;
         toggle.margin_right = 5;
