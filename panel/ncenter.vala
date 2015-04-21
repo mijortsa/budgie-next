@@ -33,6 +33,8 @@ public class HeaderWidget : Gtk.EventBox
         label.halign = Gtk.Align.START;
 
         label.margin = 10;
+        label.margin_left = 20;
+
         show_all();
 
         get_style_context().add_class("header-widget");
