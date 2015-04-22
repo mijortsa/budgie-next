@@ -312,7 +312,11 @@ public class Slat : Gtk.ApplicationWindow
             if (e.button != 1) {
                 return Gdk.EVENT_PROPAGATE;
             }
-            popover.show_all();
+            if (popover.get_visible()) {
+                popover.hide();
+            } else {
+                popover.show_all();
+            }
             return Gdk.EVENT_STOP;
         });
         manager.register_popover(mainbtn, popover);
