@@ -68,6 +68,7 @@ public class DesktopHelper : Object
         simpletons["google-chrome-stable"] = "google-chrome";
         /* Constency++ */
         simpletons["gnome-clocks"] = "org.gnome.clocks";
+        simpletons["gnome-calendar"] = "org.gnome.Calendar";
         simpletons["gnome-screenshot"] = "org.gnome.Screenshot";
         simpletons["nautilus"] = "org.gnome.Nautilus";
         simpletons["totem"] = "org.gnome.Totem";
