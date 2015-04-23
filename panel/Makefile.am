@@ -48,7 +48,8 @@ budgie_next_panel_CFLAGS = \
 	-DMODULE_DATA_DIR=\"$(MODULE_DATA_DIR)\" \
 	-DDATADIR=\"$(datadir)/budgie-next\" \
 	-DLOCALEDIR=\"$(localedir)\" \
-	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\"
+	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\" \
+	-fPIC
 
 budgie_next_panel_LDADD = \
 	$(GOBJECT_LIBS) \
