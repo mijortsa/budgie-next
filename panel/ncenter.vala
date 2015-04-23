@@ -109,9 +109,18 @@ public class NCenter : Gtk.Window
 
 
         /* Demo code */
-        var header = new HeaderWidget("Media");
+        var header = new HeaderWidget("Events");
         layout.pack_start(header, false, false, 2);
         header.margin_top = 10;
+        header.margin_bottom = 10;
+
+        var cal = new Gtk.Calendar();
+        cal.margin_left = 20;
+        layout.pack_start(cal, false, false, 0);
+
+        header = new HeaderWidget("Media");
+        layout.pack_start(header, false, false, 2);
+        header.margin_top = 20;
         header.margin_bottom = 10;
 
         var mpris = new MprisWidget();
