@@ -75,12 +75,15 @@ public class NCenter : Gtk.Window
 
     // Hacky, but just says how far to offset our window.
     int offset;
+    Budgie.PanelPosition position;
 
     public int required_size { public get ; protected set; }
 
-    public NCenter(int offset)
+    public NCenter(Budgie.PanelPosition position, int offset)
     {
         Object(type_hint: Gdk.WindowTypeHint.DOCK);
+        this.position = position;
+
         destroy.connect(Gtk.main_quit);
         this.offset = offset;
 
@@ -293,9 +296,10 @@ public class NCenter : Gtk.Window
         var width = (int) (scr.width * 0.16);
         our_width = width;
         our_height = scr.height - offset;
+        var y = position == Budgie.PanelPosition.TOP ? scr.y+offset : scr.y;
         if (!get_realized()) {
             realize();
         }
-        move(scr.x + (scr.width-width), scr.y+offset);
+        move(scr.x + (scr.width-width), y);
     }
 }

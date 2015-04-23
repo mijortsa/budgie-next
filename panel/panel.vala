@@ -44,6 +44,13 @@ class PopoverManager : Object {
             }
             Gtk.Allocation alloc;
             visible_popover.get_allocation(out alloc);
+
+            if (owner.position == PanelPosition.BOTTOM) {
+                /* GTK is on serious amounts of crack, Y is always 0. */
+                Gtk.Allocation parent;
+                owner.get_allocation(out parent);
+                alloc.y = parent.height - alloc.height;
+            }
             if ((e.x < alloc.x || e.x > alloc.x+alloc.width) ||
                 (e.y < alloc.y || e.y > alloc.y+alloc.height)) {
                     visible_popover.hide();
@@ -178,12 +185,13 @@ public class Slat : Gtk.ApplicationWindow
     Gtk.Box layout;
     Gtk.Box main_layout;
 
-    PanelPosition position = PanelPosition.TOP;
+    public PanelPosition position = PanelPosition.TOP;
     PopoverManager manager;
     bool expanded = true;
     Gtk.ToggleButton? toggle;
 
     NCenter ncenter;
+    Budgie.HShadowBlock shadow;
 
     public Slat(Gtk.Application? app)
     {
@@ -225,7 +233,7 @@ public class Slat : Gtk.ApplicationWindow
         main_layout.valign = Gtk.Align.START;
 
         /* Shadow.. */
-        var shadow = new Budgie.HShadowBlock();
+        shadow = new Budgie.HShadowBlock();
         shadow.hexpand = false;
         shadow.halign = Gtk.Align.START;
         shadow.show_all();
@@ -234,7 +242,7 @@ public class Slat : Gtk.ApplicationWindow
 
         demo_code();
 
-        ncenter = new NCenter(intended_height - 5);
+        ncenter = new NCenter(position, intended_height - 5);
         ncenter.bind_property("required-size", shadow, "required-size", BindingFlags.DEFAULT, (b,v, ref v2)=> {
             var d = (main_layout.get_allocated_width()-v.get_int()) + 5;
             v2 = Value(typeof(int));
@@ -249,8 +257,7 @@ public class Slat : Gtk.ApplicationWindow
         });
 
         realize();
-        Budgie.set_struts(this, position, intended_height - 5);
-        move(orig_scr.x, orig_scr.y);
+        placement();
         get_child().show_all();
         set_expanded(false);
 
@@ -382,6 +389,23 @@ public class Slat : Gtk.ApplicationWindow
         queue_resize();
         if (expanded) {
             present();
+        }
+    }
+
+    void placement()
+    {
+        Budgie.set_struts(this, position, intended_height - 5);
+        switch (position) {
+            case Budgie.PanelPosition.TOP:
+                move(orig_scr.x, orig_scr.y);
+                break;
+            default:
+                main_layout.valign = Gtk.Align.END;
+                move(orig_scr.x, orig_scr.y+(orig_scr.height-intended_height));
+                main_layout.reorder_child(shadow, 0);
+                shadow.get_style_context().add_class("bottom");
+                set_gravity(Gdk.Gravity.SOUTH);
+                break;
         }
     }
 }
