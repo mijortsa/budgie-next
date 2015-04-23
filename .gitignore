@@ -34,3 +34,5 @@ budgie-next-panel
 *resources*.h
 Makefile.in.in
 POTFILES
+shell_proxy*
+budgie-next-wm
