@@ -77,6 +77,7 @@ public class ClientImage : Gtk.Image
  */
 public class ClientWidget : Gtk.Box
 {
+    Gtk.Revealer player_revealer;
     Gtk.Image background;
     MprisClient client;
     Gtk.Label title_label;
@@ -85,6 +86,9 @@ public class ClientWidget : Gtk.Box
     Gtk.Button prev_btn;
     Gtk.Button play_btn;
     Gtk.Button next_btn;
+    Gtk.Button collapse_btn;
+
+    bool collapsed = false;
 
     /**
      * Create a new ClientWidget
@@ -97,6 +101,9 @@ public class ClientWidget : Gtk.Box
 
         this.client = client;
 
+        player_revealer = new Gtk.Revealer ();
+        player_revealer.reveal_child = true;
+        var player_box = new Gtk.Box(Gtk.Orientation.VERTICAL, 3);
 
         Gtk.Widget? row = null;;
         string icon_name = "emblem-music-symbolic";
@@ -113,6 +120,21 @@ public class ClientWidget : Gtk.Box
         }
         row.margin_bottom = 3;
         pack_start(row, false, false, 0);
+
+        collapse_btn = new Gtk.Button.from_icon_name("window-minimize-symbolic", Gtk.IconSize.MENU);
+            collapse_btn.clicked.connect(()=> {
+                Idle.add(()=>{
+                    try {
+                        // toggle the collapsed state
+                        this.collapse(!collapsed);
+                    } catch (Error e) {
+                        warning("Could not quit player: %s", e.message);
+                    }
+                    return false;
+                });
+            });
+        collapse_btn.set_relief(Gtk.ReliefStyle.NONE);
+        (row as Gtk.Box).pack_end(collapse_btn, false, false, 0);
 
         if (client.player.can_quit) {
             var qbtn = new Gtk.Button.from_icon_name("window-close-symbolic", Gtk.IconSize.MENU);
@@ -134,7 +156,7 @@ public class ClientWidget : Gtk.Box
         background.pixel_size = BACKGROUND_SIZE;
 
         var layout = new Gtk.Overlay();
-        pack_start(layout, true, true, 0);
+        player_box.pack_start(layout, true, true, 0);
 
         layout.add(background);
 
@@ -142,13 +164,13 @@ public class ClientWidget : Gtk.Box
         /* normal info */
         row = create_row("Unknown Artist", "user-info-symbolic");
         artist_label = row.get_data("label_item");
-        pack_start(row, false, false, 0);
+        player_box.pack_start(row, false, false, 0);
         row = create_row("Unknown Title", "emblem-music-symbolic");
         title_label = row.get_data("label_item");
-        pack_start(row, false, false, 0);
+        player_box.pack_start(row, false, false, 0);
         row = create_row("Unknown Album", "media-optical-symbolic");
         album_label = row.get_data("label_item");
-        pack_start(row, false, false, 0);
+        player_box.pack_start(row, false, false, 0);
 
         var controls = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
 
@@ -239,6 +261,23 @@ public class ClientWidget : Gtk.Box
                 });
             }
         });
+
+        player_revealer.add(player_box);
+        pack_start(player_revealer);
+    }
+
+    void collapse(bool collapse)
+    {
+        player_revealer.reveal_child = !collapse;
+
+        if (collapse)
+        {
+            (collapse_btn.get_image () as Gtk.Image).set_from_icon_name("window-maximize-symbolic", Gtk.IconSize.MENU);
+        } else {
+            (collapse_btn.get_image () as Gtk.Image).set_from_icon_name("window-minimize-symbolic", Gtk.IconSize.MENU);
+        }
+
+        collapsed = collapse;
     }
 
     /**
