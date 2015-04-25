@@ -150,6 +150,10 @@ public class ClientWidget : Gtk.Box
             });
             qbtn.set_relief(Gtk.ReliefStyle.NONE);
             (row as Gtk.Box).pack_end(qbtn, false, false, 0);
+        } else {
+            // if not closable it remains in the pane permanently
+            // therefore it is desired to collapse by default for saving space
+            this.collapse (true);
         }
 
         background = new ClientImage.from_icon_name("emblem-music-symbolic", Gtk.IconSize.INVALID);
