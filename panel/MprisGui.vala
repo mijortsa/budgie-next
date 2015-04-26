@@ -122,13 +122,13 @@ public class ClientWidget : Gtk.Box
         pack_start(row, false, false, 0);
 
         collapse_btn = new Gtk.Button.from_icon_name("window-minimize-symbolic", Gtk.IconSize.MENU);
-            collapse_btn.clicked.connect(()=> {
+        collapse_btn.clicked.connect(()=> {
                 Idle.add(()=>{
                     try {
                         // toggle the collapsed state
                         this.collapse(!collapsed);
                     } catch (Error e) {
-                        warning("Could not quit player: %s", e.message);
+                        warning("Could not collapse player widget: %s", e.message);
                     }
                     return false;
                 });
