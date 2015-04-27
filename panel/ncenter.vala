@@ -47,10 +47,32 @@ public class HeaderWidget : Gtk.EventBox
     }
 }
 
+class SpecialBox : Gtk.Box
+{
+    public int pref_width { public get; public set; }
+
+    public SpecialBox(Gtk.Orientation o, int padding)
+    {
+        Object(orientation: o, spacing: padding);
+        pref_width = 300;
+    }
+
+    public override void get_preferred_width(out int m, out int n)
+    {
+        m = pref_width;
+        n = pref_width;
+    }
+
+    public override void get_preferred_width_for_height(int h, out int n, out int m)
+    {
+        m = pref_width;
+        n = pref_width;
+    }
+}
 
 public class NCenter : Gtk.Window
 {
-    Gtk.Box layout;
+    SpecialBox layout;
     Gtk.Box main_layout;
     int our_width;
     int our_height;
@@ -97,7 +119,7 @@ public class NCenter : Gtk.Window
         resizable = false;
         set_keep_above(true);
 
-        layout = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+        layout = new SpecialBox(Gtk.Orientation.VERTICAL, 0);
         main_layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
         add(main_layout);
 
@@ -305,6 +327,7 @@ public class NCenter : Gtk.Window
         var width = (int) (scr.width * 0.16);
         our_width = width;
         our_height = scr.height - offset;
+        layout.pref_width = our_width - 5;
         var y = position == Budgie.PanelPosition.TOP ? scr.y+offset : scr.y;
         if (!get_realized()) {
             realize();
