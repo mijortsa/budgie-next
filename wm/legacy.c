@@ -60,24 +60,6 @@ typedef struct _ScreenTilePreview
   MetaRectangle   tile_rect;
 } ScreenTilePreview;
 
-void
-on_monitors_changed (MetaScreen *screen,
-                     MetaPlugin *plugin)
-{
-  BudgieWM *self = BUDGIE_WM (plugin);
-  int i, n;
-  clutter_actor_destroy_all_children (self->priv->background_group);
-
-
-  n = meta_screen_get_n_monitors (screen);
-  for (i = 0; i < n; i++)
-    {
-      ClutterActor *bg = budgie_background_new(screen, i);
-      clutter_actor_add_child(self->priv->background_group, bg);
-      clutter_actor_show(bg);
-    }
-}
-
 /*
  * Tile preview private data accessor
  */

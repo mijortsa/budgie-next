@@ -21,10 +21,6 @@
 
 #pragma once
 
-void
-on_monitors_changed (MetaScreen *screen,
-                     MetaPlugin *plugin);
-
 void show_tile_preview (MetaPlugin      *plugin,
                                MetaWindow      *window,
                                MetaRectangle   *tile_rect,

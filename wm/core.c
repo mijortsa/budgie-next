@@ -9,7 +9,10 @@
  * (at your option) any later version.
  */
 
+#define _GNU_SOURCE
 #include "config.h"
+
+#include <stdint.h>
 
 #include <meta/meta-plugin.h>
 #include <meta/window.h>
@@ -53,6 +56,17 @@ static const MetaPluginInfo *budgie_plugin_info(MetaPlugin *plugin);
 static void kill_window_effects(MetaPlugin *plugin, MetaWindowActor *actor)
 {
         /* No op right now */
+}
+
+static void on_monitors_changed(MetaScreen *screen, BudgieWM *self)
+{
+        clutter_actor_destroy_all_children(self->priv->background_group);
+
+        for (uint i = 0; i < meta_screen_get_n_monitors(screen); i++) {
+                ClutterActor *bg = budgie_background_new(screen, i);
+                clutter_actor_add_child(self->priv->background_group, bg);
+                clutter_actor_show(bg);
+        }
 }
 
 static void budgie_wm_class_init(BudgieWMClass *klass)
@@ -127,8 +141,8 @@ static void budgie_wm_start(MetaPlugin *plugin)
         self->priv->background_group, NULL);
 
         g_signal_connect(screen, "monitors-changed",
-                G_CALLBACK(on_monitors_changed), plugin);
-        on_monitors_changed(screen, plugin);
+                G_CALLBACK(on_monitors_changed), self);
+        on_monitors_changed(screen, self);
 
         /* Now we're in action. */
         clutter_actor_show(meta_get_window_group_for_screen(screen));
