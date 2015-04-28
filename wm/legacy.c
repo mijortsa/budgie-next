@@ -42,18 +42,12 @@
 
 #include <gio/gdesktopappinfo.h>
 
-#define MAXIMIZE_TIMEOUT   100
-#define BACKGROUND_TIMEOUT 250
-#define SWITCH_TIMEOUT    1
-
 #include "plugin.h"
 #include "impl.h"
 #include "background.h"
 
-#define ACTOR_DATA_KEY "MCCP-Default-actor-data"
 #define SCREEN_TILE_PREVIEW_DATA_KEY "MCCP-Default-screen-tile-preview-data"
 
-static GQuark actor_data_quark = 0;
 static GQuark screen_tile_preview_data_quark = 0;
 
 
@@ -65,36 +59,6 @@ typedef struct _ScreenTilePreview
 
   MetaRectangle   tile_rect;
 } ScreenTilePreview;
-
-/*
- * Actor private data accessor
- */
-static void
-free_actor_private (gpointer data)
-{
-  if (G_LIKELY (data != NULL))
-    g_slice_free (ActorPrivate, data);
-}
-
-ActorPrivate *
-get_actor_private (MetaWindowActor *actor)
-{
-  ActorPrivate *priv = g_object_get_qdata (G_OBJECT (actor), actor_data_quark);
-
-  if (G_UNLIKELY (actor_data_quark == 0))
-    actor_data_quark = g_quark_from_static_string (ACTOR_DATA_KEY);
-
-  if (G_UNLIKELY (!priv))
-    {
-      priv = g_slice_new0 (ActorPrivate);
-
-      g_object_set_qdata_full (G_OBJECT (actor),
-                               actor_data_quark, priv,
-                               free_actor_private);
-    }
-
-  return priv;
-}
 
 void
 on_monitors_changed (MetaScreen *screen,
