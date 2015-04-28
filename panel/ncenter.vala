@@ -70,6 +70,8 @@ class SpecialBox : Gtk.Box
     }
 }
 
+public static const string CALENDAR_MIME = "text/calendar";
+
 public class NCenter : Gtk.Window
 {
     SpecialBox layout;
@@ -77,6 +79,7 @@ public class NCenter : Gtk.Window
     int our_width;
     int our_height;
     DMSeat? proxy;
+    AppInfo? calprov;
 
     private double scale = 0.0;
 
@@ -129,6 +132,10 @@ public class NCenter : Gtk.Window
 
         layout.get_style_context().add_class("notification-center");
 
+        AppInfoMonitor.get().changed.connect(()=> {
+            load_known_apps();
+        });
+        load_known_apps();
 
         /* Demo code */
         var header = new HeaderWidget("Events");
@@ -140,11 +147,17 @@ public class NCenter : Gtk.Window
         cal.margin_left = 20;
         layout.pack_start(cal, false, false, 0);
         cal.day_selected_double_click.connect((s) => {
+            if (calprov == null) {
+                message("No calendar application present");
+                return;
+            }
             try {
                 int d = cal.day;
                 int m = cal.month + 1;
                 int y = cal.year;
-                Process.spawn_command_line_async(@"gnome-calendar -d $d/$m/$y");
+                /* In future determine behaviour based on application */
+                var exec = calprov.get_commandline();
+                Process.spawn_command_line_async(@"$exec -d $d/$m/$y");
             } catch (Error e) {
                 message("Error invoking gnome-calendar: %s", e.message);
             }
@@ -222,6 +235,17 @@ public class NCenter : Gtk.Window
 
         placement();
         get_child().show_all();
+    }
+
+    /**
+     * Likely to expand in future, just reload the providers
+     */
+    void load_known_apps()
+    {
+        calprov = AppInfo.get_default_for_type(CALENDAR_MIME, false);
+        if (calprov == null) {
+            message("No calendar application installed");
+        }
     }
 
     public override bool draw(Cairo.Context cr)
