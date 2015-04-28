@@ -139,6 +139,16 @@ public class NCenter : Gtk.Window
         var cal = new Gtk.Calendar();
         cal.margin_left = 20;
         layout.pack_start(cal, false, false, 0);
+        cal.day_selected_double_click.connect((s) => {
+            try {
+                int d = cal.day;
+                int m = cal.month + 1;
+                int y = cal.year;
+                Process.spawn_command_line_async(@"gnome-calendar -d $d/$m/$y");
+            } catch (Error e) {
+                message("Error invoking gnome-calendar: %s", e.message);
+            }
+        });
 
         header = new HeaderWidget("Media");
         layout.pack_start(header, false, false, 2);
