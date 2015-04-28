@@ -106,7 +106,7 @@ public class NCenter : Gtk.Window
 
     public NCenter(Budgie.PanelPosition position, int offset)
     {
-        Object(type_hint: Gdk.WindowTypeHint.DOCK);
+        Object(type_hint: Gdk.WindowTypeHint.UTILITY);
         this.position = position;
 
         destroy.connect(Gtk.main_quit);
@@ -119,9 +119,11 @@ public class NCenter : Gtk.Window
             set_visual(vis);
         }
 
-        resizable = false;
+        resizable = true;
+        skip_taskbar_hint = true;
+        skip_pager_hint = true;
         set_keep_above(true);
-
+        set_decorated(false);
         layout = new SpecialBox(Gtk.Orientation.VERTICAL, 0);
         main_layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
         add(main_layout);
@@ -130,6 +132,18 @@ public class NCenter : Gtk.Window
         main_layout.pack_start(shadow, false, false, 0);
         main_layout.pack_start(layout, true, true, 0);
 
+        shadow.realize.connect(()=> {
+            var win = shadow.get_window();
+            var disp = shadow.get_screen().get_display();
+            win.set_cursor(new Gdk.Cursor.for_display(disp, Gdk.CursorType.SB_H_DOUBLE_ARROW));
+        });
+        shadow.button_press_event.connect((w,e)=> {
+            if (e.button != 1) {
+                return Gdk.EVENT_PROPAGATE;
+            }
+            this.begin_resize_drag(Gdk.WindowEdge.WEST, (int)e.button,(int) e.x_root, (int)e.y_root, e.get_time());
+            return Gdk.EVENT_PROPAGATE;
+        });
         layout.get_style_context().add_class("notification-center");
 
         AppInfoMonitor.get().changed.connect(()=> {
@@ -358,7 +372,7 @@ public class NCenter : Gtk.Window
         var mon = screen.get_primary_monitor();
         screen.get_monitor_geometry(mon, out scr);
 
-        var width = (int) (scr.width * 0.16);
+        var width = (int) (scr.width * 0.15);
         our_width = width;
         our_height = scr.height - offset;
         layout.pref_width = our_width - 5;
