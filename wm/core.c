@@ -97,11 +97,11 @@ static void budgie_wm_init(BudgieWM *self)
 {
         self->priv = budgie_wm_get_instance_private(self);
         
-        self->priv->info.name        = "Budgie WM";
+        self->priv->info.name        = "Budgie Next WM";
         self->priv->info.version     = PACKAGE_VERSION;
         self->priv->info.author      = "Ikey Doherty";
         self->priv->info.license     = "GPL2";
-        self->priv->info.description = "Budgie WM Plugin for Mutter";
+        self->priv->info.description = "Budgie Next WM Plugin for Mutter";
 
         /* Override schemas for edge-tiling and attachment of modal dialogs to parent */
         meta_prefs_override_preference_schema(MUTTER_EDGE_TILING, BUDGIE_WM_SCHEMA);
