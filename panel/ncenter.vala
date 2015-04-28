@@ -76,10 +76,12 @@ public class NCenter : Gtk.Window
 {
     SpecialBox layout;
     Gtk.Box main_layout;
+    Gtk.Box components;
     int our_width;
     int our_height;
     DMSeat? proxy;
     AppInfo? calprov;
+    Gtk.ScrolledWindow scroller;
 
     private double scale = 0.0;
 
@@ -108,7 +110,7 @@ public class NCenter : Gtk.Window
     {
         Object(type_hint: Gdk.WindowTypeHint.UTILITY);
         this.position = position;
-
+        get_style_context().add_class("budgie-container");
         destroy.connect(Gtk.main_quit);
         this.offset = offset;
 
@@ -127,6 +129,13 @@ public class NCenter : Gtk.Window
         layout = new SpecialBox(Gtk.Orientation.VERTICAL, 0);
         main_layout = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
         add(main_layout);
+
+        scroller = new Gtk.ScrolledWindow(null, null);
+        components = new Gtk.Box(Gtk.Orientation.VERTICAL, 0);
+        scroller.add(components);
+        scroller.set_policy(Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC);
+
+        layout.pack_start(scroller, true, true, 0);
 
         var shadow = new Budgie.VShadowBlock();
         main_layout.pack_start(shadow, false, false, 0);
@@ -153,13 +162,13 @@ public class NCenter : Gtk.Window
 
         /* Demo code */
         var header = new HeaderWidget("Events");
-        layout.pack_start(header, false, false, 2);
+        components.pack_start(header, false, false, 2);
         header.margin_top = 10;
         header.margin_bottom = 10;
 
         var cal = new Gtk.Calendar();
         cal.margin_left = 20;
-        layout.pack_start(cal, false, false, 0);
+        components.pack_start(cal, false, false, 0);
         cal.day_selected_double_click.connect((s) => {
             if (calprov == null) {
                 message("No calendar application present");
@@ -178,22 +187,22 @@ public class NCenter : Gtk.Window
         });
 
         header = new HeaderWidget("Media");
-        layout.pack_start(header, false, false, 2);
+        components.pack_start(header, false, false, 2);
         header.margin_top = 20;
         header.margin_bottom = 10;
 
         var mpris = new MprisWidget();
         mpris.margin_left = 20;
-        layout.pack_start(mpris, false, false, 0);
+        components.pack_start(mpris, false, false, 0);
 
         header = new HeaderWidget("Audio");
-        layout.pack_start(header, false, false, 2);
+        components.pack_start(header, false, false, 2);
         header.margin_top = 20;
         header.margin_bottom = 10;
         var audio = new AudioPane();
         audio.margin_left = 20;
         audio.margin_right = 20;
-        layout.pack_start(audio, false, false, 0);
+        components.pack_start(audio, false, false, 0);
 
         var bottom = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
         var wrap = new Gtk.EventBox();

@@ -6,6 +6,9 @@
     background-color: transparent;
 }
 
+GtkScrolledWindow {
+    background-color: transparent;
+}
 /*
  * This just looks fugly.
  * GtkPopover {
