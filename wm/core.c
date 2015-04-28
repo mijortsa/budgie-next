@@ -50,6 +50,11 @@ static void budgie_launch_rundialog(MetaDisplay *display,
 
 static const MetaPluginInfo *budgie_plugin_info(MetaPlugin *plugin);
 
+static void kill_window_effects(MetaPlugin *plugin, MetaWindowActor *actor)
+{
+        /* No op right now */
+}
+
 static void budgie_wm_class_init(BudgieWMClass *klass)
 {
         GObjectClass *g_object_class;
