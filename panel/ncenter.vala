@@ -227,6 +227,16 @@ public class NCenter : Gtk.Window
         btn.relief = Gtk.ReliefStyle.NONE;
         btn.margin_left = 20;
         bottom.pack_start(btn, false, false, 0);
+
+        btn = new Gtk.Button.from_icon_name("system-lock-screen-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+        btn.clicked.connect(()=> {
+            lock_screen();
+        });
+        btn.halign = Gtk.Align.START;
+        btn.relief = Gtk.ReliefStyle.NONE;
+        btn.margin_left = 20;
+        bottom.pack_start(btn, false, false, 0);
+
         btn = new Gtk.Button.from_icon_name("system-shutdown-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
         btn.clicked.connect(()=> {
             try {
@@ -234,15 +244,6 @@ public class NCenter : Gtk.Window
             } catch (Error e) {
                 message("Error invoking end session dialog: %s", e.message);
             }
-        });
-        btn.halign = Gtk.Align.START;
-        btn.relief = Gtk.ReliefStyle.NONE;
-        btn.margin_left = 20;
-        bottom.pack_start(btn, false, false, 0);
-
-        btn = new Gtk.Button.from_icon_name("system-lock-screen-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
-        btn.clicked.connect(()=> {
-            lock_screen();
         });
         btn.halign = Gtk.Align.START;
         btn.relief = Gtk.ReliefStyle.NONE;
