@@ -121,14 +121,6 @@ public class ClientWidget : Gtk.Box
         row.margin_bottom = 3;
         pack_start(row, false, false, 0);
 
-        collapse_btn = new Gtk.Button.from_icon_name("window-minimize-symbolic", Gtk.IconSize.MENU);
-        collapse_btn.clicked.connect(()=> {
-            // toggle the collapsed state
-            this.collapse(!collapsed);
-        });
-        collapse_btn.set_relief(Gtk.ReliefStyle.NONE);
-        (row as Gtk.Box).pack_end(collapse_btn, false, false, 0);
-
         if (client.player.can_quit) {
             var qbtn = new Gtk.Button.from_icon_name("window-close-symbolic", Gtk.IconSize.MENU);
             qbtn.clicked.connect(()=> {
@@ -148,6 +140,16 @@ public class ClientWidget : Gtk.Box
             // therefore it is desired to collapse by default for saving space
             this.collapse (true);
         }
+
+
+        collapse_btn = new Gtk.Button.from_icon_name("window-minimize-symbolic", Gtk.IconSize.MENU);
+        collapse_btn.clicked.connect(()=> {
+            // toggle the collapsed state
+            this.collapse(!collapsed);
+        });
+        collapse_btn.set_relief(Gtk.ReliefStyle.NONE);
+        (row as Gtk.Box).pack_end(collapse_btn, false, false, 0);
+
 
         background = new ClientImage.from_icon_name("emblem-music-symbolic", Gtk.IconSize.INVALID);
         background.pixel_size = BACKGROUND_SIZE;
