@@ -108,7 +108,7 @@ public class NCenter : Gtk.Window
 
     public NCenter(Budgie.PanelPosition position, int offset)
     {
-        Object(type_hint: Gdk.WindowTypeHint.UTILITY, gravity : Gdk.Gravity.EAST);
+        Object(type_hint: Gdk.WindowTypeHint.DOCK, gravity : Gdk.Gravity.EAST);
         this.position = position;
         get_style_context().add_class("budgie-container");
         destroy.connect(Gtk.main_quit);
