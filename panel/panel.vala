@@ -189,6 +189,7 @@ public class Slat : Gtk.ApplicationWindow
     PopoverManager manager;
     bool expanded = true;
     Gtk.ToggleButton? toggle;
+    TrayApplet? tray;
 
     NCenter ncenter;
     Budgie.HShadowBlock shadow;
@@ -339,6 +340,9 @@ public class Slat : Gtk.ApplicationWindow
             ncenter.set_expanded(toggle.get_active());
         });
         layout.pack_end(toggle, false, false, 0);
+
+        tray = new TrayApplet();
+        layout.pack_end(tray, false, false, 0);
 
         Timeout.add_seconds_full(GLib.Priority.LOW, 1, update_clock);
         update_clock();

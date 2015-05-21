@@ -32,6 +32,7 @@ budgie_next_panel_SOURCES = \
 	MprisGui.vala \
 	MprisWidget.vala \
 	ncenter.vala \
+	TrayApplet.vala \
 	panel.vala \
 	utils.vala
 
@@ -49,6 +50,7 @@ budgie_next_panel_CFLAGS = \
 	-DDATADIR=\"$(datadir)/budgie-next\" \
 	-DLOCALEDIR=\"$(localedir)\" \
 	-DGETTEXT_PACKAGE=\"$(GETTEXT_PACKAGE)\" \
+	-I${top_srcdir}/imports/natray \
 	-fPIC
 
 budgie_next_panel_LDADD = \
@@ -58,6 +60,8 @@ budgie_next_panel_LDADD = \
 	$(GMENU_LIBS) \
 	$(GVC_LIBS) \
 	../gvc/libgvc.la \
+	${top_builddir}/imports/natray/libnatray.la \
+	-lX11 \
 	-lm
 
 budgie_next_panel_VALAFLAGS = \
@@ -67,4 +71,6 @@ budgie_next_panel_VALAFLAGS = \
 	--pkg libwnck-3.0 \
 	--pkg gio-unix-2.0 \
 	--pkg libgnome-menu-3.0 \
+	--pkg natray-1.0 \
+	--vapidir ${top_srcdir}/imports/natray \
 	$(VALAFLAGS)
