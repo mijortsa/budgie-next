@@ -77,6 +77,8 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, ["$GETTEXT_PACKAGE"], [Define the gettext pa
 AC_CONFIG_FILES([Makefile
                 data/Makefile
                 gvc/Makefile
+                imports/Makefile
+                imports/natray/Makefile
                 panel/Makefile
                 wm/Makefile])
 AC_OUTPUT

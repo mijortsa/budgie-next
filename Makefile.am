@@ -12,5 +12,6 @@ CLEANFILES =
 SUBDIRS = \
 	data \
 	gvc \
+	imports \
 	panel \
 	wm
