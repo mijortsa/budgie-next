@@ -10,6 +10,10 @@
     color: white;
 }
 
+.main-panel.expanded {
+    background-color: @theme_bg_color;
+}
+
 .budgie-container {
     background-color: transparent;
 }

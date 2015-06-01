@@ -201,6 +201,8 @@ public class Slat : Gtk.ApplicationWindow
 
         load_css();
 
+        get_settings().set_property("gtk-application-prefer-dark-theme", true);
+
         manager = new PopoverManager(this);
 
         var vis = screen.get_rgba_visual();
@@ -341,6 +343,13 @@ public class Slat : Gtk.ApplicationWindow
         toggle.get_style_context().add_class("clock");
         toggle.clicked.connect(()=> {
             ncenter.set_expanded(toggle.get_active());
+            if (toggle.get_active()) {
+                layout.get_style_context().add_class("expanded");
+                shadow.show();
+            } else {
+                layout.get_style_context().remove_class("expanded");
+                shadow.hide();
+            }
         });
         layout.pack_end(toggle, false, false, 0);
 
