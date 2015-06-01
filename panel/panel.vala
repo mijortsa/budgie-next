@@ -262,6 +262,8 @@ public class Slat : Gtk.ApplicationWindow
         get_child().show_all();
         set_expanded(false);
 
+        shadow.hide();
+
         Idle.add(fade_in);
     }
 
@@ -336,6 +338,7 @@ public class Slat : Gtk.ApplicationWindow
         toggle = new Gtk.ToggleButton.with_label("00:00:00");
         toggle.relief = Gtk.ReliefStyle.NONE;
         toggle.margin_right = 5;
+        toggle.get_style_context().add_class("clock");
         toggle.clicked.connect(()=> {
             ncenter.set_expanded(toggle.get_active());
         });

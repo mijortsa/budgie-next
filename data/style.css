@@ -1,5 +1,13 @@
-.notification-center, .main-panel {
-    background-color: alpha(black, 0.66);
+.notification-center {
+    background-color: @theme_bg_color;
+}
+
+.main-panel {
+    background-color: transparent;
+}
+
+.main-panel .clock {
+    color: white;
 }
 
 .budgie-container {
@@ -16,22 +24,17 @@ GtkScrolledWindow {
 }*/
 
 .notification-center .header-widget {
-    color: alpha(white, 0.80);
+    color: @theme_fg_color;
     font-size: 12pt;
-    background-color: alpha(black, 0.26);
+    background-color: darker(@theme_bg_color);
 }
 
-.notification-center .button, .notification-center .check {
+/*.notification-center .button, .notification-center .check {
     color: white;
-}
+}*/
 
 NCenter {
     background-color: transparent;
-    color: white;
-}
-
-.main-panel GtkButton {
-    color: white;
 }
 
 .button:hover, .button:checked {
