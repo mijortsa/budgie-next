@@ -32,6 +32,7 @@ budgie_next_panel_SOURCES = \
 	MprisGui.vala \
 	MprisWidget.vala \
 	ncenter.vala \
+	NetworkApplet.vala \
 	TrayApplet.vala \
 	panel.vala \
 	utils.vala
@@ -43,6 +44,7 @@ budgie_next_panel_CFLAGS = \
 	$(WNCK3_CFLAGS) \
 	$(GMENU_CFLAGS) \
 	$(GVC_CFLAGS) \
+	$(NM_CFLAGS) \
 	-I${top_srcdir}/gvc/ \
 	-DGMENU_I_KNOW_THIS_IS_UNSTABLE \
 	-DMODULE_DIR=\"$(MODULEDIR)\" \
@@ -59,6 +61,7 @@ budgie_next_panel_LDADD = \
 	$(WNCK3_LIBS) \
 	$(GMENU_LIBS) \
 	$(GVC_LIBS) \
+	$(NM_LIBS) \
 	../gvc/libgvc.la \
 	${top_builddir}/imports/natray/libnatray.la \
 	-lX11 \
@@ -72,5 +75,6 @@ budgie_next_panel_VALAFLAGS = \
 	--pkg gio-unix-2.0 \
 	--pkg libgnome-menu-3.0 \
 	--pkg natray-1.0 \
+	--pkg libnm-glib \
 	--vapidir ${top_srcdir}/imports/natray \
 	$(VALAFLAGS)

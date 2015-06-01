@@ -345,6 +345,10 @@ public class Slat : Gtk.ApplicationWindow
         var tasklist = new IconTasklistApplet();
         layout.pack_start(tasklist, true, true, 10);
 
+        var network = new NetworkApplet();
+        sbox.pack_start(network, false, false, 2);
+        network.margin_start = 3;
+
         toggle = new Gtk.ToggleButton.with_label("00:00:00");
         toggle.relief = Gtk.ReliefStyle.NONE;
         toggle.margin_right = 3;
