@@ -334,12 +334,20 @@ public class Slat : Gtk.ApplicationWindow
         manager.register_popover(mainbtn, popover);
         layout.pack_start(mainbtn, false, false, 10);
 
+        var status_area = new Gtk.EventBox();
+        status_area.margin_end = 3;
+        status_area.valign = Gtk.Align.CENTER;
+        var sbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
+        status_area.add(sbox);
+        status_area.get_style_context().add_class("status-area");
+        layout.pack_end(status_area, false, false, 0);
+
         var tasklist = new IconTasklistApplet();
         layout.pack_start(tasklist, true, true, 10);
 
         toggle = new Gtk.ToggleButton.with_label("00:00:00");
         toggle.relief = Gtk.ReliefStyle.NONE;
-        toggle.margin_right = 5;
+        toggle.margin_right = 3;
         toggle.get_style_context().add_class("clock");
         toggle.clicked.connect(()=> {
             ncenter.set_expanded(toggle.get_active());
@@ -351,11 +359,11 @@ public class Slat : Gtk.ApplicationWindow
                 shadow.hide();
             }
         });
-        layout.pack_end(toggle, false, false, 0);
+        sbox.pack_end(toggle, false, false, 2);
 
         tray = new TrayApplet();
-        layout.pack_end(tray, false, false, 0);
-
+        tray.margin_start = 3;
+        sbox.pack_end(tray, false, false, 2);
         Timeout.add_seconds_full(GLib.Priority.LOW, 1, update_clock);
         update_clock();
     }

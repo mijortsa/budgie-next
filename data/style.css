@@ -18,6 +18,12 @@
     background-color: transparent;
 }
 
+.main-panel .status-area {
+    background-color: @theme_bg_color;
+    color: @theme_fg_color;
+    border-radius: 2px;
+}
+
 GtkScrolledWindow {
     background-color: transparent;
 }
