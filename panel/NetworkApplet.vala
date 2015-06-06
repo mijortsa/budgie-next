@@ -133,6 +133,7 @@ public class NetworkApplet : Gtk.EventBox
         }
     }
 
+    /** Unused currently */
     void init_applet()
     {
         if (client == null) {
@@ -147,13 +148,10 @@ public class NetworkApplet : Gtk.EventBox
         var dev = con.get_devices()[0];
         switch (dev.get_device_type()) {
             case NM.DeviceType.WIFI:
-                message("GOT LE WIFI");
                 break;
             case NM.DeviceType.ETHERNET:
-                message("GOT LE ETHERNETTAGE");
                 break;
             default:
-                message("I GOT NFC!");
                 break;
         }
     }
