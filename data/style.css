@@ -11,10 +11,6 @@
     color: white;
 }
 
-.main-panel.expanded {
-    background-color: alpha(#3c4049, 0.9);
-}
-
 .budgie-container {
     background-color: transparent;
 }

@@ -181,6 +181,7 @@ public class Slat : Gtk.ApplicationWindow
     int intended_height = 42 + 5;
     Gdk.Rectangle small_scr;
     Gdk.Rectangle orig_scr;
+    Gtk.EventBox status_area;
 
     Gtk.Box layout;
     Gtk.Box main_layout;
@@ -266,6 +267,15 @@ public class Slat : Gtk.ApplicationWindow
 
         shadow.hide();
 
+
+        var r = Gdk.RGBA();
+        r.parse("black");
+        r.alpha = 0.79;
+        set_overlay_color(this, "main-panel.expanded", r);
+        set_overlay_color(ncenter, "notification-center", r);
+        set_overlay_color(ncenter.get_child(), "notification-center .header-widget", r);
+        set_overlay_color(status_area, "main-panel .status-area", r);
+
         Idle.add(fade_in);
     }
 
@@ -334,7 +344,7 @@ public class Slat : Gtk.ApplicationWindow
         manager.register_popover(mainbtn, popover);
         layout.pack_start(mainbtn, false, false, 10);
 
-        var status_area = new Gtk.EventBox();
+        status_area = new Gtk.EventBox();
         status_area.margin_end = 3;
         status_area.valign = Gtk.Align.CENTER;
         var sbox = new Gtk.Box(Gtk.Orientation.HORIZONTAL, 0);
@@ -435,6 +445,27 @@ public class Slat : Gtk.ApplicationWindow
                 set_gravity(Gdk.Gravity.SOUTH);
                 break;
         }
+    }
+
+    void set_overlay_color(Gtk.Widget? widget, string class_name, Gdk.RGBA rgba)
+    {
+        string st = rgba.to_string();
+
+        Gtk.CssProvider? prov = widget.get_data(".budgie-style");
+
+        if (prov != null) {
+            Gtk.StyleContext.remove_provider_for_screen(screen, prov);
+        }
+        try {
+            prov = new Gtk.CssProvider();
+            string d = @".$(class_name) { background-color: rgba($(rgba.red), $(rgba.blue), $(rgba.green), $(rgba.alpha)); }";
+            prov.load_from_data(d, -1);
+            Gtk.StyleContext.add_provider_for_screen(screen, prov, Gtk.STYLE_PROVIDER_PRIORITY_USER);
+            widget.set_data(".budgie-style", prov);
+        } catch (Error e) {
+            message("Error processing style: %s\n", e.message);
+        }
+        reset_style();
     }
 }
 
