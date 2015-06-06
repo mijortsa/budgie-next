@@ -1,5 +1,6 @@
 .notification-center {
-    background-color: @theme_bg_color;
+    background-color: alpha(#3c4049, 0.9);
+    color: #A8ADB5;
 }
 
 .main-panel {
@@ -11,7 +12,7 @@
 }
 
 .main-panel.expanded {
-    background-color: @theme_bg_color;
+    background-color: alpha(#3c4049, 0.9);
 }
 
 .budgie-container {
@@ -19,7 +20,7 @@
 }
 
 .main-panel .status-area {
-    background-color: @theme_bg_color;
+    background-color: #3c4049;
     color: @theme_fg_color;
     border-radius: 2px;
 }
@@ -34,9 +35,9 @@ GtkScrolledWindow {
 }*/
 
 .notification-center .header-widget {
-    color: @theme_fg_color;
+    color: #A8ADB5;
     font-size: 12pt;
-    background-color: darker(@theme_bg_color);
+    background-color: darker(#3c4049);
 }
 
 /*.notification-center .button, .notification-center .check {
@@ -139,4 +140,11 @@ PanelToplevel .launcher:hover {
 .right .launcher:hover {
     border: 2px solid alpha(white, 0.0);
     border-right: 2px solid alpha(white, 0.5);
+}
+
+GtkCalendar {
+    background-image: none;
+    border-image: none;
+    background-color: transparent;
+    border: none;
 }

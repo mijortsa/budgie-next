@@ -43,7 +43,7 @@ PKG_CHECK_MODULES([WNCK3], [libwnck-3.0 >= 3.4.7])
 PKG_CHECK_MODULES([GMENU], [libgnome-menu-3.0 >= 3.10.1])
 
 # Networking.
-PKG_CHECK_MODULES([NM], [libnm-glib >= 0.9.8])
+PKG_CHECK_MODULES([NM], [libnm-glib >= 0.9.8, libnm-util >= 0.9.8])
 
 # WM
 AC_ARG_ENABLE(wm, AS_HELP_STRING([--enable-wm], [enable wm @<:@default=yes@:>@]),

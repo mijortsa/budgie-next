@@ -12,7 +12,7 @@
 namespace Budgie
 {
 
-class PopoverManager : Object {
+public class PopoverManager : Object {
     HashTable<Gtk.Widget?,Gtk.Popover?> widgets;
 
     unowned Budgie.Slat? owner;
@@ -345,7 +345,7 @@ public class Slat : Gtk.ApplicationWindow
         var tasklist = new IconTasklistApplet();
         layout.pack_start(tasklist, true, true, 10);
 
-        var network = new NetworkApplet();
+        var network = new NetworkApplet(manager);
         sbox.pack_start(network, false, false, 2);
         network.margin_start = 3;
 
